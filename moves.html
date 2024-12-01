@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Moves</title>
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Pokémon Moves</h1>
+    </header>
+    <div id="moves-list"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+
+  <script>
+    fetch('https://pokeapi.co/api/v2/move')
+      .then(response => response.json())
+      .then(data => {
+        const movesList = data.results.map(move => `
+          <button class="btn btn-secondary mt-3" onclick="fetchMoveDetails('${move.name}')">${move.name}</button>
+        `).join('');
+        document.getElementById('moves-list').innerHTML = movesList;
+      });
+
+    function fetchMoveDetails(move) {
+      const url = `https://pokeapi.co/api/v2/move/${move}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const moveDetails = `
+            <h3>${data.name}</h3>
+            <p>${data.effect_entries[0].short_effect}</p>
+          `;
+          document.getElementById('moves-list').innerHTML = moveDetails;
+        });
+    }
+  </script>
+</body>
+</html>

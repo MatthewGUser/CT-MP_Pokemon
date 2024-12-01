@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Details</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Pokémon Details</h1>
+      <p>Detailed information about your Pokémon.</p>
+    </header>
+    <div id="pokemon-details"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+
+  <script>
+    // Get Pokémon ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pokemonId = urlParams.get('id');
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+      .then(response => response.json())
+      .then(data => {
+        const pokemonDetails = `
+          <h3>${data.name.toUpperCase()}</h3>
+          <img src="${data.sprites.front_default}" alt="${data.name}">
+          <p><strong>Types:</strong> ${data.types.map(type => type.type.name).join(', ')}</p>
+          <p><strong>Abilities:</strong> ${data.abilities.map(ability => ability.ability.name).join(', ')}</p>
+          <p><strong>Height:</strong> ${data.height} decimetres</p>
+          <p><strong>Weight:</strong> ${data.weight} hectograms</p>
+        `;
+        document.getElementById('pokemon-details').innerHTML = pokemonDetails;
+      })
+      .catch(error => {
+        document.getElementById('pokemon-details').innerHTML = '<p>Pokémon details not found.</p>';
+      });
+  </script>
+</body>
+</html>

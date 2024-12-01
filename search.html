@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Pokémon</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Search Pokémon</h1>
+      <p>Enter a Pokémon name or ID to get information.</p>
+    </header>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <input type="text" id="search-input" class="form-control" placeholder="Enter Pokémon name or ID">
+        <button class="btn btn-primary mt-3" onclick="fetchPokemon()">Search</button>
+      </div>
+    </div>
+    <div id="pokemon-details" class="mt-5"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/custom.js"></script>
+</body>
+</html>

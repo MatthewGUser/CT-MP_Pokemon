@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Generations</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Pokémon Generations</h1>
+      <p>Explore Pokémon across different generations.</p>
+    </header>
+    <div id="generations-list"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+
+  <script>
+    fetch('https://pokeapi.co/api/v2/generation')
+      .then(response => response.json())
+      .then(data => {
+        const generationsList = data.results.map(generation => `
+          <button class="btn btn-secondary mt-3" onclick="fetchGenerationDetails('${generation.name}')">${generation.name}</button>
+        `).join('');
+        document.getElementById('generations-list').innerHTML = generationsList;
+      });
+
+    function fetchGenerationDetails(generation) {
+      const url = `https://pokeapi.co/api/v2/generation/${generation}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const generationDetails = `
+            <h3>${data.name}</h3>
+            <p>${data.main_region.name}</p>
+          `;
+          document.getElementById('generations-list').innerHTML = generationDetails;
+        });
+    }
+  </script>
+</body>
+</html>

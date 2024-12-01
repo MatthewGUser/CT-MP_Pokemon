@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Battle Simulator</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Pokémon Battle Simulator</h1>
+      <p>Simulate a battle between two Pokémon.</p>
+    </header>
+    <div class="row">
+      <div class="col-md-6">
+        <input type="text" id="pokemon1" class="form-control" placeholder="Enter Pokémon 1">
+      </div>
+      <div class="col-md-6">
+        <input type="text" id="pokemon2" class="form-control" placeholder="Enter Pokémon 2">
+      </div>
+    </div>
+    <button class="btn btn-primary mt-3" onclick="startBattle()">Start Battle</button>
+    <div id="battle-result" class="mt-5"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+
+  <script>
+    function startBattle() {
+      const pokemon1Name = document.getElementById('pokemon1').value.toLowerCase();
+      const pokemon2Name = document.getElementById('pokemon2').value.toLowerCase();
+
+      // Fetch data for both Pokémon
+      Promise.all([
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon1Name}`).then(res => res.json()),
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon2Name}`).then(res => res.json())
+      ])
+      .then(data => {
+        const pokemon1 = data[0];
+        const pokemon2 = data[1];
+
+        // Simple battle logic based on base stats (e.g., attack and defense)
+        const pokemon1Stats = pokemon1.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
+        const pokemon2Stats = pokemon2.stats.reduce((acc, stat) => acc + stat.base_stat, 0);
+
+        let winner;
+        if (pokemon1Stats > pokemon2Stats) {
+          winner = pokemon1.name;
+        } else if (pokemon2Stats > pokemon1Stats) {
+          winner = pokemon2.name;
+        } else {
+          winner = 'It\'s a tie!';
+        }
+
+        const resultMessage = `
+          <h3>Battle Result</h3>
+          <p><strong>Pokémon 1:</strong> ${pokemon1.name} (Stats: ${pokemon1Stats})</p>
+          <p><strong>Pokémon 2:</strong> ${pokemon2.name} (Stats: ${pokemon2Stats})</p>
+          <h4>Winner: ${winner}</h4>
+        `;
+        document.getElementById('battle-result').innerHTML = resultMessage;
+      })
+      .catch(error => {
+        document.getElementById('battle-result').innerHTML = '<p>Failed to fetch Pokémon data. Please check the names.</p>';
+      });
+    }
+  </script>
+</body>
+</html>

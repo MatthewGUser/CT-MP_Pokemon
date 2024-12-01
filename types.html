@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Types</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="text-center my-5">
+      <h1>Pokémon Types</h1>
+    </header>
+    <div id="types-list"></div>
+    <footer class="text-center my-5">
+      <p>&copy; 2024 Pokémon Integration</p>
+    </footer>
+  </div>
+
+  <script>
+    fetch('https://pokeapi.co/api/v2/type')
+      .then(response => response.json())
+      .then(data => {
+        const typesList = data.results.map(type => `
+          <button class="btn btn-secondary mt-3" onclick="fetchPokemonByType('${type.name}')">${type.name}</button>
+        `).join('');
+        document.getElementById('types-list').innerHTML = typesList;
+      });
+
+    function fetchPokemonByType(type) {
+      const url = `https://pokeapi.co/api/v2/type/${type}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const pokemon = data.pokemon.map(p => `<p>${p.pokemon.name}</p>`).join('');
+          document.getElementById('types-list').innerHTML = pokemon;
+        });
+    }
+  </script>
+</body>
+</html>
